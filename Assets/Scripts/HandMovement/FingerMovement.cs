@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace HandMovement
 {
     public class FingerMovement : MonoBehaviour
     {
+        public bool TestMode = false;
+        
         [Header("Finger Parts")]
         [FormerlySerializedAs("finger_middle")] [SerializeField] private GameObject _fingerMiddle;
         [FormerlySerializedAs("finger_tip")] [SerializeField] private GameObject _fingerTip;
@@ -42,12 +45,19 @@ namespace HandMovement
             _angleTip = _fingerTipTransform.rotation.z;
         }
 
-        void Update()
+        private void Update()
         {
-            // update angles for each finger
-            _angleBase = Mathf.Clamp(this._angleBase, _minAngle, _maxAngle);
-            _angleMiddle = Mathf.Clamp(this._angleMiddle, _minAngle, _maxAngle);
-            _angleTip = Mathf.Clamp(this._angleTip, _minAngle, _maxAngle);
+            if (TestMode)
+            {
+                UpdateFingerAngles(_angleBase, _angleMiddle);
+            }
+        }
+
+        public void UpdateFingerAngles(float angleBase, float angleMiddle)
+        {
+            _angleBase = Mathf.Clamp(angleBase, _minAngle, _maxAngle);
+            _angleMiddle = Mathf.Clamp(angleMiddle, _minAngle, _maxAngle);
+            _angleTip = Mathf.Clamp(angleMiddle*0.8f, _minAngle, _maxAngle);
             
             _fingerBaseTransform.localEulerAngles = new Vector3(0, 0, -_angleBase);
             _fingerMiddleTransform.localEulerAngles = new Vector3(0, 0, -_angleMiddle);

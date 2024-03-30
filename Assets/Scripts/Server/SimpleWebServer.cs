@@ -4,13 +4,22 @@ using System.Net;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class SimpleWebServer : MonoBehaviour
 {
-    private HttpListener listener;
-    private bool isRunning = false;
-    [SerializeField]
-    private TextMeshProUGUI text;
+    private HttpListener _listener;
+    private bool _isRunning = false;
+    
+    [FormerlySerializedAs("text")] [SerializeField] private TextMeshProUGUI _text;
+
+    // The number of fingers at the moment!!!!
+    private int _fingerCount = 2;
+    // IMPORTANT!!!
+    
+    public UnityEvent<float, float, float, float> OnDataGot;
+
 
     private void Start()
     {
@@ -30,21 +39,21 @@ public class SimpleWebServer : MonoBehaviour
             return;
         }
 
-        listener = new HttpListener();
+        _listener = new HttpListener();
         // Define the URL to listen to (You might need to replace 'localhost' with your machine's IP address)
-        listener.Prefixes.Add("http://localhost:8080/");
-        listener.Start();
-        isRunning = true;
-        listener.BeginGetContext(new AsyncCallback(HandleRequest), listener);
+        _listener.Prefixes.Add("http://localhost:8080/");
+        _listener.Start();
+        _isRunning = true;
+        _listener.BeginGetContext(new AsyncCallback(HandleRequest), _listener);
         Debug.Log("Server started on http://localhost:8080/");
     }
 
     public void StopServer()
     {
-        if (listener != null)
+        if (_listener != null)
         {
-            listener.Stop();
-            isRunning = false;
+            _listener.Stop();
+            _isRunning = false;
             Debug.Log("Server stopped.");
         }
     }
@@ -56,12 +65,12 @@ public class SimpleWebServer : MonoBehaviour
     }
 
     private void DoHandVisualization(string input) {
-        this.text.text = input;
+        this._text.text = input;
     }
 
 private void HandleRequest(IAsyncResult result)
 {
-    if (!isRunning) return;
+    if (!_isRunning) return;
 
     // Obtain the state object and HttpListener context
     HttpListener listener = (HttpListener)result.AsyncState;
@@ -81,6 +90,8 @@ private void HandleRequest(IAsyncResult result)
         // Read the data sent with the POST request
         using StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding);
         string postData = reader.ReadToEnd();
+        
+        Debug.Log("Post data: "+postData);
 
         // Parse the postData for the finger values
         string[] pairs = postData.Split('&');
@@ -89,7 +100,7 @@ private void HandleRequest(IAsyncResult result)
             string[] split = pair.Split('=');
             if (split.Length == 2)
             {
-                for (int i = 1; i <= 5; i++)
+                for (int i = 1; i <= _fingerCount; i++)
                 {
                     if (split[0] == $"finger{i}" && float.TryParse(split[1], out float value))
                     {
