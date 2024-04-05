@@ -15,21 +15,25 @@ namespace HandMovement
         [FormerlySerializedAs("finger_tip")] [SerializeField] private GameObject _fingerTip;
         
         [Header("Angles")]
-        [Range(-3f, 90f)]
+        [Range(-10f, 90f)]
         [FormerlySerializedAs("angle_base")]
         [SerializeField] private float _angleBase;
         
         [FormerlySerializedAs("angle_middle")]
-        [Range(-3f, 90f)]
+        [Range(-10f, 90f)]
         [SerializeField] private float _angleMiddle;
         
         [FormerlySerializedAs("angle_tip")]
-        [Range(-3f, 90f)]   
+        [Range(-10f, 90f)]   
         [SerializeField] private float _angleTip;
         
         private Transform _fingerMiddleTransform;
         private Transform _fingerTipTransform;
         private Transform _fingerBaseTransform;
+        
+        private Vector3 _fingerBaseRotation;
+        private Vector3 _fingerMiddleRotation;
+        private Vector3 _fingerTipRotation;
         
         private readonly float _minAngle = -10f;
         private readonly float _maxAngle = 90f;
@@ -39,6 +43,10 @@ namespace HandMovement
             _fingerMiddleTransform = _fingerMiddle.transform;
             _fingerTipTransform = _fingerTip.transform;
             _fingerBaseTransform = transform;
+            
+            _fingerBaseRotation = _fingerBaseTransform.localEulerAngles;
+            _fingerMiddleRotation = _fingerMiddleTransform.localEulerAngles;
+            _fingerTipRotation = _fingerTipTransform.localEulerAngles;
             
             _angleBase = _fingerBaseTransform.rotation.z;
             _angleMiddle = _fingerMiddleTransform.rotation.z;
@@ -58,10 +66,10 @@ namespace HandMovement
             _angleBase = Mathf.Clamp(angleBase, _minAngle, _maxAngle);
             _angleMiddle = Mathf.Clamp(angleMiddle, _minAngle, _maxAngle);
             _angleTip = Mathf.Clamp(angleMiddle*0.8f, _minAngle, _maxAngle);
-            
-            _fingerBaseTransform.localEulerAngles = new Vector3(0, 0, -_angleBase);
-            _fingerMiddleTransform.localEulerAngles = new Vector3(0, 0, -_angleMiddle);
-            _fingerTipTransform.localEulerAngles = new Vector3(0, 0, -_angleTip);
+
+            _fingerBaseTransform.localEulerAngles = new Vector3(_fingerBaseRotation.x, _fingerBaseRotation.y, -_angleBase);
+            _fingerMiddleTransform.localEulerAngles = new Vector3(_fingerMiddleRotation.x, _fingerMiddleRotation.y, -_angleMiddle);
+            _fingerTipTransform.localEulerAngles = new Vector3(_fingerTipRotation.x, _fingerTipRotation.y, -_angleTip);
         }
     }
 }

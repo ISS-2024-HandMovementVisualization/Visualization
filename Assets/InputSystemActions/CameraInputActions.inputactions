@@ -1,0 +1,54 @@
+{
+    "name": "CameraInputActions",
+    "maps": [
+        {
+            "name": "Camera",
+            "id": "d2d7c9c5-0fc3-489d-8c79-e8779c18a9b2",
+            "actions": [
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "84608436-e553-4ba3-b8ec-aa31b36ea6ec",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RotateCamera",
+                    "type": "Value",
+                    "id": "bb7b1515-e9d4-4921-a20b-daa4f66717c9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4c75e515-811f-4094-bc27-5bc550683793",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0c14b77-101b-439f-9d58-2bd2d0397d6e",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
