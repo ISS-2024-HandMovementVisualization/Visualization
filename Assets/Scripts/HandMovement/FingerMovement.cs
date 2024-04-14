@@ -8,7 +8,7 @@ namespace HandMovement
 {
     public class FingerMovement : MonoBehaviour
     {
-        public bool TestMode = false;
+        public bool TestMode = true;
         
         [Header("Finger Parts")]
         [FormerlySerializedAs("finger_middle")] [SerializeField] private GameObject _fingerMiddle;
@@ -17,15 +17,15 @@ namespace HandMovement
         [Header("Angles")]
         [Range(-10f, 90f)]
         [FormerlySerializedAs("angle_base")]
-        [SerializeField] private float _angleBase;
+        public float _angleBase;
         
         [FormerlySerializedAs("angle_middle")]
         [Range(-10f, 90f)]
-        [SerializeField] private float _angleMiddle;
+        public float _angleMiddle;
         
         [FormerlySerializedAs("angle_tip")]
         [Range(-10f, 90f)]   
-        [SerializeField] private float _angleTip;
+        public float _angleTip;
         
         private Transform _fingerMiddleTransform;
         private Transform _fingerTipTransform;
@@ -38,7 +38,7 @@ namespace HandMovement
         private readonly float _minAngle = -10f;
         private readonly float _maxAngle = 90f;
         
-        void Start()
+        void Awake()
         {
             _fingerMiddleTransform = _fingerMiddle.transform;
             _fingerTipTransform = _fingerTip.transform;
@@ -55,10 +55,9 @@ namespace HandMovement
 
         private void Update()
         {
-            if (TestMode)
-            {
-                UpdateFingerAngles(_angleBase, _angleMiddle);
-            }
+
+            UpdateFingerAngles(_angleBase, _angleMiddle);
+            
         }
 
         public void UpdateFingerAngles(float angleBase, float angleMiddle)
@@ -67,9 +66,22 @@ namespace HandMovement
             _angleMiddle = Mathf.Clamp(angleMiddle, _minAngle, _maxAngle);
             _angleTip = Mathf.Clamp(angleMiddle*0.8f, _minAngle, _maxAngle);
 
-            _fingerBaseTransform.localEulerAngles = new Vector3(_fingerBaseRotation.x, _fingerBaseRotation.y, -_angleBase);
-            _fingerMiddleTransform.localEulerAngles = new Vector3(_fingerMiddleRotation.x, _fingerMiddleRotation.y, -_angleMiddle);
-            _fingerTipTransform.localEulerAngles = new Vector3(_fingerTipRotation.x, _fingerTipRotation.y, -_angleTip);
+            /*
+            Debug.Log(_fingerBaseRotation.x + " " + _fingerBaseRotation.y + " " + _angleBase + " " + _angleMiddle + " " + _angleTip);
+            */
+            try
+            {
+                _fingerBaseTransform.localEulerAngles = new Vector3(_fingerBaseRotation.x, _fingerBaseRotation.y, -_angleBase);
+                _fingerMiddleTransform.localEulerAngles = new Vector3(_fingerMiddleRotation.x, _fingerMiddleRotation.y, -_angleMiddle);
+                _fingerTipTransform.localEulerAngles = new Vector3(_fingerTipRotation.x, _fingerTipRotation.y, -_angleTip);
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+                throw;
+            }
+
+
         }
     }
 }

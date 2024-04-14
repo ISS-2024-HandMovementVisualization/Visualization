@@ -18,7 +18,10 @@ public class SimpleWebServer : MonoBehaviour
     private int _fingerCount = 2;
     // IMPORTANT!!!
     
+    //curl -d "45 34 35 29" -X POST http://192.168.0.145:8080/
+    
     public UnityEvent<float, float, float, float> OnDataGot;
+    private string _latestValue;
 
 
     private void Start()
@@ -41,11 +44,11 @@ public class SimpleWebServer : MonoBehaviour
 
         _listener = new HttpListener();
         // Define the URL to listen to (You might need to replace 'localhost' with your machine's IP address)
-        _listener.Prefixes.Add("http://localhost:8080/");
+        _listener.Prefixes.Add("http://192.168.0.145:8080/");
         _listener.Start();
         _isRunning = true;
         _listener.BeginGetContext(new AsyncCallback(HandleRequest), _listener);
-        Debug.Log("Server started on http://localhost:8080/");
+        Debug.Log("Server started on http://192.168.0.145:8080/");
     }
 
     public void StopServer()
@@ -57,9 +60,7 @@ public class SimpleWebServer : MonoBehaviour
             Debug.Log("Server stopped.");
         }
     }
-
-    private string _latestValue;
-
+    
     private void Update() {
         DoHandVisualization(this._latestValue);
     }
@@ -67,63 +68,68 @@ public class SimpleWebServer : MonoBehaviour
     private void DoHandVisualization(string input) {
         this._text.text = input;
     }
-
-private void HandleRequest(IAsyncResult result)
-{
-    if (!_isRunning) return;
-
-    // Obtain the state object and HttpListener context
-    HttpListener listener = (HttpListener)result.AsyncState;
-    HttpListenerContext context = listener.EndGetContext(result);
-    // Listen for the next request
-    listener.BeginGetContext(new AsyncCallback(HandleRequest), listener);
-
-    // Initialize an array to hold the floating-point values
-    float[] fingerValues = new float[5];
-
-    // Process request
-    HttpListenerRequest request = context.Request;
-    HttpListenerResponse response = context.Response;
-
-    // Check if the request is a POST
-    if (request.HttpMethod == "POST") {
-        // Read the data sent with the POST request
-        using StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding);
-        string postData = reader.ReadToEnd();
-        
-        Debug.Log("Post data: "+postData);
-
-        // Parse the postData for the finger values
-        string[] pairs = postData.Split('&');
-        foreach (string pair in pairs)
-        {
-            string[] split = pair.Split('=');
-            if (split.Length == 2)
-            {
-                for (int i = 1; i <= _fingerCount; i++)
-                {
-                    if (split[0] == $"finger{i}" && float.TryParse(split[1], out float value))
-                    {
-                        fingerValues[i - 1] = value;
-                    }
-                }
-            }
-        }
-    }
-
-    // Respond back with the received values
-    string responseString = "";
-    for (int i = 0; i < fingerValues.Length; i++)
+    private void HandleRequest(IAsyncResult result)
     {
-        responseString += $"Finger{i + 1}: {fingerValues[i]}<br>";
-    }
-    this._latestValue = responseString;
-    byte[] buffer = Encoding.UTF8.GetBytes(responseString);
+        if (!_isRunning) return;
 
-    response.ContentLength64 = buffer.Length;
-    Stream output = response.OutputStream;
-    output.Write(buffer, 0, buffer.Length);
-    // Close the output stream.
-    output.Close();
-}
+        // Obtain the state object and HttpListener context
+        HttpListener listener = (HttpListener)result.AsyncState;
+        HttpListenerContext context = listener.EndGetContext(result);
+        // Listen for the next request
+        listener.BeginGetContext(new AsyncCallback(HandleRequest), listener);
+
+        // Initialize an array to hold the floating-point values
+        float[] fingerValues = new float[_fingerCount*2];
+
+        // Process request
+        HttpListenerRequest request = context.Request;
+        HttpListenerResponse response = context.Response;
+
+        // Check if the request is a POST
+        if (request.HttpMethod == "POST") {
+            // Read the data sent with the POST request
+            using StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding);
+            string postData = reader.ReadToEnd();
+            
+            Debug.Log("Post data: "+ postData);
+            
+            // Parse the postData for the finger values
+            string[] values = postData.Split(' ');
+
+            // indexFingerBaseR, indexFingerMiddleR, middleFingerBaseR, middleFingerMiddleR - do ustalenia
+            for (int i = 0; i < _fingerCount; i++)
+            { 
+                fingerValues[i*2] = float.Parse(values[i*2]);
+                fingerValues[i*2+1] = float.Parse(values[i*2+1]);
+            }
+
+        }
+        
+        // Respond back with the received values
+        string responseString = "";
+        for (int i = 0; i < _fingerCount; i++)
+        { 
+            responseString += $"Finger{i + 1}: {fingerValues[i*2]}, {fingerValues[i*2+1]} <br>";
+        }
+    
+        Debug.Log("Response: " + responseString);
+        this._latestValue = responseString;
+        byte[] buffer = Encoding.UTF8.GetBytes(responseString);
+
+        response.ContentLength64 = buffer.Length;
+        Stream output = response.OutputStream;
+        output.Write(buffer, 0, buffer.Length);
+        
+        // Invoke the event with the received values
+        OnDataGot.Invoke(fingerValues[0], fingerValues[1], fingerValues[2], fingerValues[3]);
+        
+        /*
+        OnDataGot.Invoke(90, 0, 0,0);
+        */
+
+
+        // Close the output stream.
+        output.Close(); 
+       
+    }
 }

@@ -21,11 +21,16 @@ namespace Data
     
         private void HandleNewData(float indexFingerBaseR, float indexFingerMiddleR, float middleFingerBaseR, float middleFingerMiddleR)
         {
+            Debug.Log("Data received - DataProcessing");
+            Debug.Log("indexFingerBaseR: " + indexFingerBaseR);
+            Debug.Log("indexFingerMiddleR: " + indexFingerMiddleR);
+            Debug.Log("middleFingerBaseR: " + middleFingerBaseR);
+            Debug.Log("middleFingerMiddleR: " + middleFingerMiddleR);
             // process data - TO DO
-            var indexFingerBaseAngle = indexFingerBaseR * 90;
-            var indexFingerMiddleAngle = indexFingerMiddleR * 90;
-            var middleFingerBaseAngle = middleFingerBaseR * 90;
-            var middleFingerMiddleAngle = middleFingerMiddleR * 90;
+            var indexFingerBaseAngle = indexFingerBaseR;
+            var indexFingerMiddleAngle = indexFingerMiddleR;
+            var middleFingerBaseAngle = middleFingerBaseR;
+            var middleFingerMiddleAngle = middleFingerMiddleR;
             
             // send processed data to MovementController
             OnNewDataProcessed.Invoke(

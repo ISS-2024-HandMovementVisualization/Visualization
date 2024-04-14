@@ -27,6 +27,7 @@ namespace HandMovement
             _middleFingerMovement = _middleFinger.GetComponent<FingerMovement>();
 
             _dataProcessor = _dataProcessorPrefab.GetComponent<DataProcessing>();
+
             _dataProcessor.OnNewDataProcessed.AddListener(HandleAngelsUpdate);
             
             if (_testMode)
@@ -40,8 +41,13 @@ namespace HandMovement
 
         private void HandleAngelsUpdate(float indexFingerBaseAngle, float indexFingerMiddleAngle, float middleFingerBaseAngle, float middleFingerMiddleAngle)
         {
-            _indexFingerMovement.UpdateFingerAngles(indexFingerBaseAngle, indexFingerMiddleAngle);
-            _middleFingerMovement.UpdateFingerAngles(middleFingerBaseAngle, middleFingerMiddleAngle);
+            Debug.Log("Data received - MovementController");
+            _indexFingerMovement._angleBase = indexFingerBaseAngle;
+            _indexFingerMovement._angleMiddle = indexFingerMiddleAngle;
+            _middleFingerMovement._angleBase = middleFingerBaseAngle;
+            _middleFingerMovement._angleMiddle = middleFingerMiddleAngle;
+            /*_indexFingerMovement.UpdateFingerAngles(indexFingerBaseAngle, indexFingerMiddleAngle);
+            _middleFingerMovement.UpdateFingerAngles(middleFingerBaseAngle, middleFingerMiddleAngle);*/
         }
         
         private void OnDestroy()
