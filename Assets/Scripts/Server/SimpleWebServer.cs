@@ -120,8 +120,8 @@ public class SimpleWebServer : MonoBehaviour
         Stream output = response.OutputStream;
         output.Write(buffer, 0, buffer.Length);
         
-        // Invoke the event with the received values
-        OnDataGot.Invoke(fingerValues[0], fingerValues[1], fingerValues[2], fingerValues[3]);
+        // Invoke the event with the received values TUUUUUUUUUU PATRZEĆ!!!!! OSTANIE Z PIERWSZYM 
+        OnDataGot.Invoke(fingerValues[3], fingerValues[1], fingerValues[2], fingerValues[0]);
         
         /*
         OnDataGot.Invoke(90, 0, 0,0);

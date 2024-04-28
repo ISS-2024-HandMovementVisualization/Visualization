@@ -42,6 +42,8 @@ namespace HandMovement
         private void HandleAngelsUpdate(float indexFingerBaseAngle, float indexFingerMiddleAngle, float middleFingerBaseAngle, float middleFingerMiddleAngle)
         {
             Debug.Log("Data received - MovementController");
+            // PIERWSZA WARTOŚĆ TO (TEARZ) ŚRODEK ŚRODKOWEGO PALCA!!!!! PALEC ŚRODKOWY ->> PODŁĄCZONE 
+
             _indexFingerMovement._angleBase = indexFingerBaseAngle;
             _indexFingerMovement._angleMiddle = indexFingerMiddleAngle;
             _middleFingerMovement._angleBase = middleFingerBaseAngle;

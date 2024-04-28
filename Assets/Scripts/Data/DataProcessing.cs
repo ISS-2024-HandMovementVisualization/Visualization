@@ -27,10 +27,10 @@ namespace Data
             Debug.Log("middleFingerBaseR: " + middleFingerBaseR);
             Debug.Log("middleFingerMiddleR: " + middleFingerMiddleR);
             // process data - TO DO
-            var indexFingerBaseAngle = indexFingerBaseR;
-            var indexFingerMiddleAngle = indexFingerMiddleR;
-            var middleFingerBaseAngle = middleFingerBaseR;
-            var middleFingerMiddleAngle = middleFingerMiddleR;
+            var indexFingerBaseAngle = indexFingerBaseR / 4000 * 90;
+            var indexFingerMiddleAngle = indexFingerMiddleR / 4000 * 90;
+            var middleFingerBaseAngle = middleFingerBaseR / 4000 * 90;
+            var middleFingerMiddleAngle = ReadingToAngle(middleFingerMiddleR, 2000, 2800);
             
             // send processed data to MovementController
             OnNewDataProcessed.Invoke(
@@ -39,7 +39,12 @@ namespace Data
                 middleFingerBaseAngle,
                 middleFingerMiddleAngle);
         }
-    
+        private float ReadingToAngle(float reading, float min, float max)
+        {
+            var normalized = (reading-min) / (max-min);
+            return (1 - normalized) * 90;
+        }
+
         private void OnDestroy()
         {
             _simpleWebServer.OnDataGot.RemoveListener(HandleNewData);
