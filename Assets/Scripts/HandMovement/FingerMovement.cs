@@ -15,16 +15,16 @@ namespace HandMovement
         [FormerlySerializedAs("finger_tip")] [SerializeField] private GameObject _fingerTip;
         
         [Header("Angles")]
-        [Range(-10f, 90f)]
+        [Range(-5f, 90f)]
         [FormerlySerializedAs("angle_base")]
         public float _angleBase;
         
         [FormerlySerializedAs("angle_middle")]
-        [Range(-10f, 90f)]
+        [Range(-5f, 90f)]
         public float _angleMiddle;
         
         [FormerlySerializedAs("angle_tip")]
-        [Range(-10f, 90f)]   
+        [Range(-5f, 90f)]   
         public float _angleTip;
         
         private Transform _fingerMiddleTransform;

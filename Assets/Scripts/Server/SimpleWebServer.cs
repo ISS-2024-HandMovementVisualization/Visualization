@@ -14,6 +14,8 @@ public class SimpleWebServer : MonoBehaviour
     
     [FormerlySerializedAs("text")] [SerializeField] private TextMeshProUGUI _text;
 
+    private string _ipAddress = "192.168.253.232";
+
     // The number of fingers at the moment!!!!
     private int _fingerCount = 2;
     // IMPORTANT!!!
@@ -44,11 +46,11 @@ public class SimpleWebServer : MonoBehaviour
 
         _listener = new HttpListener();
         // Define the URL to listen to (You might need to replace 'localhost' with your machine's IP address)
-        _listener.Prefixes.Add("http://192.168.0.145:8080/");
+        _listener.Prefixes.Add($"http://{_ipAddress}:8080/");
         _listener.Start();
         _isRunning = true;
         _listener.BeginGetContext(new AsyncCallback(HandleRequest), _listener);
-        Debug.Log("Server started on http://192.168.0.145:8080/");
+        Debug.Log($"Server started on http://{_ipAddress}:8080/");
     }
 
     public void StopServer()
