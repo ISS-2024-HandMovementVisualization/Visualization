@@ -12,8 +12,8 @@ namespace Data
         [SerializeField] private GameObject _simpleWebServerPrefab;
         public UnityEvent<float, float, float, float> OnNewDataProcessed;
         
-        [SerializeField] private int _maxValue = 3200;
-        [SerializeField] private int _minValue = 2200;
+        [SerializeField] private int _maxValue = 1500;
+        [SerializeField] private int _minValue = 800;
     
         private SimpleWebServer _simpleWebServer;
         void Start()
@@ -31,9 +31,9 @@ namespace Data
             Debug.Log("middleFingerMiddleR: " + middleFingerMiddleR);
             // process data - TO DO
             var indexFingerBaseAngle = indexFingerBaseR / 4000 * 90;
-            var indexFingerMiddleAngle = indexFingerMiddleR / 4000 * 90;
+            var indexFingerMiddleAngle = ReadingToAngle(indexFingerMiddleR, 1000, 1200);
             var middleFingerBaseAngle = middleFingerBaseR / 4000 * 90;
-            var middleFingerMiddleAngle = ReadingToAngle(middleFingerMiddleR, _minValue, _maxValue);
+            var middleFingerMiddleAngle = ReadingToAngle(middleFingerMiddleR, 700, 900);
             
             // send processed data to MovementController
             OnNewDataProcessed.Invoke(

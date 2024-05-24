@@ -44,13 +44,19 @@ namespace HandMovement
             Debug.Log("Data received - MovementController");
             // PIERWSZA WARTOŚĆ TO (TEARZ) ŚRODEK ŚRODKOWEGO PALCA!!!!! PALEC ŚRODKOWY ->> PODŁĄCZONE 
 
+            /*
             _indexFingerMovement._angleBase = indexFingerBaseAngle;
+            */
+            _indexFingerMovement._angleBase = 0;
+
             _indexFingerMovement._angleMiddle = indexFingerMiddleAngle;
+            /*
             _middleFingerMovement._angleBase = middleFingerBaseAngle;
+            */
+            _middleFingerMovement._angleBase = 0;
+
             _middleFingerMovement._angleMiddle = middleFingerMiddleAngle;
-            /*_indexFingerMovement.UpdateFingerAngles(indexFingerBaseAngle, indexFingerMiddleAngle);
-            _middleFingerMovement.UpdateFingerAngles(middleFingerBaseAngle, middleFingerMiddleAngle);*/
-        }
+         }
         
         private void OnDestroy()
         {
