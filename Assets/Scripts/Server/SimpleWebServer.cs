@@ -14,15 +14,23 @@ public class SimpleWebServer : MonoBehaviour
     
     [FormerlySerializedAs("text")] [SerializeField] private TextMeshProUGUI _text;
 
-    private string _ipAddress = "192.168.205.232";
+    private string _ipAddress = "192.168.0.145";
 
     // The number of fingers at the moment!!!!
-    private int _fingerCount = 2;
-    // IMPORTANT!!!
+    private int _fingerCount = 5;
+
+    private enum fingers
+    {
+        indexFinger,
+        middleFinger,
+        ringFinger,
+        pinkyFinger,
+        thumb
+    }
     
     //curl -d "45 34 35 29" -X POST http://192.168.0.145:8080/
     
-    public UnityEvent<float, float, float, float> OnDataGot;
+    public UnityEvent<float[]> OnDataGot;
     private string _latestValue;
 
 
@@ -111,7 +119,7 @@ public class SimpleWebServer : MonoBehaviour
         string responseString = "";
         for (int i = 0; i < _fingerCount; i++)
         { 
-            responseString += $"Finger{i + 1}: {fingerValues[i*2]}, {fingerValues[i*2+1]} <br>";
+            responseString += $"{(fingers)i}: {fingerValues[i*2]}, {fingerValues[i*2+1]} <br>";
         }
     
         Debug.Log("Response: " + responseString);
@@ -122,19 +130,9 @@ public class SimpleWebServer : MonoBehaviour
         Stream output = response.OutputStream;
         output.Write(buffer, 0, buffer.Length);
         
-        // 0: middle middle 1: index middle 2: 0 3:0 
-        // Invoke the event with the received values TUUUUUUUUUU PATRZEĆ!!!!! OSTANIE Z PIERWSZYM 
-        /*
-        OnDataGot.Invoke(fingerValues[3], fingerValues[1], fingerValues[2], fingerValues[0]);
-        */
+        OnDataGot.Invoke(fingerValues);
         
-        OnDataGot.Invoke(fingerValues[3], fingerValues[1], fingerValues[2], fingerValues[0]);
         
-        /*
-        OnDataGot.Invoke(90, 0, 0,0);
-        */
-
-
         // Close the output stream.
         output.Close(); 
        

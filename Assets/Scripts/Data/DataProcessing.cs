@@ -10,37 +10,64 @@ namespace Data
     {
         // Start is called before the first frame update
         [SerializeField] private GameObject _simpleWebServerPrefab;
-        public UnityEvent<float, float, float, float> OnNewDataProcessed;
+        public UnityEvent<float[]> OnNewDataProcessed;
         
         [SerializeField] private int _maxValue = 1500;
         [SerializeField] private int _minValue = 800;
     
         private SimpleWebServer _simpleWebServer;
+        private float[] _fingerAngles;
         void Start()
         {
             _simpleWebServer = _simpleWebServerPrefab.GetComponent<SimpleWebServer>();
             _simpleWebServer.OnDataGot.AddListener(HandleNewData);
         }
     
-        private void HandleNewData(float indexFingerBaseR, float indexFingerMiddleR, float middleFingerBaseR, float middleFingerMiddleR)
+        private void HandleNewData(float[] fingersR)
         {
+            var indexFingerBaseR = fingersR[0];
+            var indexFingerMiddleR = fingersR[1];
+            var middleFingerBaseR = fingersR[2];
+            var middleFingerMiddleR = fingersR[3];
+            var ringFingerBaseR = fingersR[4];
+            var ringFingerMiddleR = fingersR[5];
+            var pinkyFingerBaseR = fingersR[6];
+            var pinkyFingerMiddleR = fingersR[7];
+            var thumbBaseR = fingersR[8];
+            var thumbMiddleR = fingersR[9];
+            
             Debug.Log("Data received - DataProcessing");
             Debug.Log("indexFingerBaseR: " + indexFingerBaseR);
             Debug.Log("indexFingerMiddleR: " + indexFingerMiddleR);
             Debug.Log("middleFingerBaseR: " + middleFingerBaseR);
             Debug.Log("middleFingerMiddleR: " + middleFingerMiddleR);
+            
             // process data - TO DO
-            var indexFingerBaseAngle = indexFingerBaseR / 4000 * 90;
-            var indexFingerMiddleAngle = ReadingToAngle(indexFingerMiddleR, 1000, 1200);
-            var middleFingerBaseAngle = middleFingerBaseR / 4000 * 90;
+            /*var indexFingerBaseAngle = ReadingToAngle(indexFingerBaseR , 1000, 1200);
+            var indexFingerMiddleAngle = ReadingToAngle(indexFingerMiddleR, 1000, 1200);*/
+            var indexFingerBaseAngle = ReadingToAngle(indexFingerBaseR , 700, 900);
+            var indexFingerMiddleAngle = ReadingToAngle(indexFingerMiddleR, 700, 900);
+            var middleFingerBaseAngle = ReadingToAngle(middleFingerBaseR, 700, 900);
             var middleFingerMiddleAngle = ReadingToAngle(middleFingerMiddleR, 700, 900);
+            var ringFingerBaseAngle = ReadingToAngle(ringFingerBaseR, 700, 900);
+            var ringFingerMiddleAngle = ReadingToAngle(ringFingerMiddleR, 700, 900);
+            var pinkyFingerBaseAngle = ReadingToAngle(pinkyFingerBaseR, 700, 900);
+            var pinkyFingerMiddleAngle = ReadingToAngle(pinkyFingerMiddleR, 700, 900);
+            var thumbBaseAngle = ReadingToAngle(thumbBaseR, 700, 900);
+            var thumbMiddleAngle = ReadingToAngle(thumbMiddleR, 700, 900);
+            
+
+            _fingerAngles = new[]
+            {
+                indexFingerBaseAngle, indexFingerMiddleAngle,
+                middleFingerBaseAngle, middleFingerMiddleAngle,
+                ringFingerBaseAngle, ringFingerMiddleAngle,
+                pinkyFingerBaseAngle, pinkyFingerMiddleAngle,
+                thumbBaseAngle, thumbMiddleAngle
+            };
             
             // send processed data to MovementController
-            OnNewDataProcessed.Invoke(
-                indexFingerBaseAngle, 
-                indexFingerMiddleAngle, 
-                middleFingerBaseAngle,
-                middleFingerMiddleAngle);
+            OnNewDataProcessed.Invoke(_fingerAngles);
         }
         private float ReadingToAngle(float reading, float min, float max)
         {
