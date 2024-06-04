@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,16 +22,16 @@ namespace Data
     
         private void HandleNewData(float[] fingersR)
         {
-            var indexFingerBaseR = fingersR[0];
-            var indexFingerMiddleR = fingersR[1];
-            var middleFingerBaseR = fingersR[2];
-            var middleFingerMiddleR = fingersR[3];
-            var ringFingerBaseR = fingersR[4];
-            var ringFingerMiddleR = fingersR[5];
-            var pinkyFingerBaseR = fingersR[6];
-            var pinkyFingerMiddleR = fingersR[7];
-            var thumbBaseR = fingersR[8];
-            var thumbMiddleR = fingersR[9];
+            var indexFingerMiddleR = fingersR[0];
+            var indexFingerBaseR = fingersR[1];
+            var middleFingerMiddleR = fingersR[2];
+            var middleFingerBaseR = fingersR[3];            
+            var ringFingerMiddleR = fingersR[4];
+            var ringFingerBaseR = fingersR[5];
+            var pinkyFingerMiddleR = fingersR[6];
+            var pinkyFingerBaseR = fingersR[7];
+            var thumbMiddleR = fingersR[8];
+            var thumbBaseR = fingersR[9];
             
             Debug.Log("Data received - DataProcessing");
             Debug.Log("indexFingerBaseR: " + indexFingerBaseR);
