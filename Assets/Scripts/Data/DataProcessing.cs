@@ -42,16 +42,16 @@ namespace Data
             // process data - TO DO
             /*var indexFingerBaseAngle = ReadingToAngle(indexFingerBaseR , 1000, 1200);
             var indexFingerMiddleAngle = ReadingToAngle(indexFingerMiddleR, 1000, 1200);*/
-            var indexFingerBaseAngle = ReadingToAngle(indexFingerBaseR , 700, 900);
-            var indexFingerMiddleAngle = ReadingToAngle(indexFingerMiddleR, 700, 900);
-            var middleFingerBaseAngle = ReadingToAngle(middleFingerBaseR, 700, 900);
-            var middleFingerMiddleAngle = ReadingToAngle(middleFingerMiddleR, 700, 900);
-            var ringFingerBaseAngle = ReadingToAngle(ringFingerBaseR, 700, 900);
-            var ringFingerMiddleAngle = ReadingToAngle(ringFingerMiddleR, 700, 900);
-            var pinkyFingerBaseAngle = ReadingToAngle(pinkyFingerBaseR, 700, 900);
-            var pinkyFingerMiddleAngle = ReadingToAngle(pinkyFingerMiddleR, 700, 900);
-            var thumbBaseAngle = ReadingToAngle(thumbBaseR, 700, 900);
-            var thumbMiddleAngle = ReadingToAngle(thumbMiddleR, 700, 900);
+            var indexFingerBaseAngle = ReadingToAngle(indexFingerBaseR , 630, 800);
+            var indexFingerMiddleAngle = ReadingToAngle(indexFingerMiddleR, 5500, 7000);
+            var middleFingerBaseAngle = ReadingToAngle(middleFingerBaseR, 1100, 1300);
+            var middleFingerMiddleAngle = ReadingToAngle(middleFingerMiddleR, 1200, 1600);
+            var ringFingerBaseAngle = ReadingToAngle(ringFingerBaseR, 470, 660);
+            var ringFingerMiddleAngle = ReadingToAngle(ringFingerMiddleR, 600, 750);
+            var pinkyFingerBaseAngle = ReadingToAngle(pinkyFingerBaseR, 508, 530);
+            var pinkyFingerMiddleAngle = ReadingToAngle(pinkyFingerMiddleR, 630, 680);
+            var thumbBaseAngle = ReadingToAngle(thumbBaseR, 520, 650);
+            var thumbMiddleAngle = ReadingToAngle(thumbMiddleR, 650, 900);
             
 
             _fingerAngles = new[]
