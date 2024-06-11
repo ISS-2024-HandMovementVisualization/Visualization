@@ -33,7 +33,7 @@ namespace HandMovement
         private Vector3 _fingerMiddleRotation;
         private Vector3 _fingerTipRotation;
         
-        private readonly float _minAngle = -10f;
+        private readonly float _minAngle = -5f;
         private readonly float _maxAngle = 90f;
         
         void Awake()

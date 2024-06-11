@@ -14,7 +14,7 @@ public class SimpleWebServer : MonoBehaviour
     
     [FormerlySerializedAs("text")] [SerializeField] private TextMeshProUGUI _text;
 
-    private string _ipAddress = "192.168.0.145";
+    private string _ipAddress = "192.168.143.232";
 
     // The number of fingers at the moment!!!!
     private int _fingerCount = 5;
